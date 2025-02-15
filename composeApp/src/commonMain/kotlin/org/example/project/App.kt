@@ -52,7 +52,10 @@ import kotlinproject.composeapp.generated.resources.dice_3
 import kotlinproject.composeapp.generated.resources.dice_4
 import kotlinproject.composeapp.generated.resources.dice_5
 import kotlinproject.composeapp.generated.resources.dice_6
+import kotlinproject.composeapp.generated.resources.png_wining_image
 import kotlinproject.composeapp.generated.resources.wining_image
+import kotlinproject.composeapp.generated.resources.wining_image_png
+import kotlinproject.composeapp.generated.resources.winner_logo_png_3
 
 @Composable
 @Preview
@@ -72,22 +75,25 @@ fun App() {
                 )
             }
             val currentDiceImage = remember { mutableStateOf(Res.drawable.compose_multiplatform) }
-
+//        if ( playerScores.value[0] >= 50 || playerScores.value[1] >= 50)
+//            isPlayer1.value=!isPlayer1.value
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .background(if(isPlayer1.value) Color(100, 181, 246) else Color(255, 138, 128))
         ) {
 //            playerScores.value[0] >= 50 || playerScores.value[1] >= 50
-            if (true) {
+            if ( playerScores.value[0] >= 50 || playerScores.value[1] >= 50) {
 
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally, // Centers children horizontally
                         verticalArrangement = Arrangement.Center, // Centers children vertically
                         modifier = Modifier.fillMaxSize()
                     ) {
-                        Image( painter = painterResource(id = R.drawable.wining_image_png),
+
+                        Image( painter = painterResource(Res.drawable.winner_logo_png_3),
                                 contentDescription = null, )
+
                         Text(
                             text = if (playerScores.value[0] > playerScores.value[1]) "Player 1 Won" else "Player 2 Won",
                             fontSize = 24.sp,
@@ -137,6 +143,7 @@ fun App() {
                             } else {
                                 playerScores.value[1] += randomNumber
                             }
+                            if ( playerScores.value[0] < 50 && playerScores.value[1] < 50)
                             isPlayer1.value = !isPlayer1.value
                         },
                         modifier = Modifier.align(Alignment.CenterHorizontally),
