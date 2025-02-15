@@ -45,6 +45,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 import kotlinproject.composeapp.generated.resources.Res
+import kotlinproject.composeapp.generated.resources.Winner_Trophy_Transparent_PNG
 import kotlinproject.composeapp.generated.resources.compose_multiplatform
 import kotlinproject.composeapp.generated.resources.dice_1
 import kotlinproject.composeapp.generated.resources.dice_2
@@ -52,10 +53,6 @@ import kotlinproject.composeapp.generated.resources.dice_3
 import kotlinproject.composeapp.generated.resources.dice_4
 import kotlinproject.composeapp.generated.resources.dice_5
 import kotlinproject.composeapp.generated.resources.dice_6
-import kotlinproject.composeapp.generated.resources.png_wining_image
-import kotlinproject.composeapp.generated.resources.wining_image
-import kotlinproject.composeapp.generated.resources.wining_image_png
-import kotlinproject.composeapp.generated.resources.winner_logo_png_3
 
 @Composable
 @Preview
@@ -80,7 +77,7 @@ fun App() {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(if(isPlayer1.value) Color(100, 181, 246) else Color(255, 138, 128))
+                .background(if(playerScores.value[0] >= 50 || playerScores.value[1] >= 50) Color(1,1,0) else if(isPlayer1.value) Color(100, 181, 246) else  Color(255, 138, 128))
         ) {
 //            playerScores.value[0] >= 50 || playerScores.value[1] >= 50
             if ( playerScores.value[0] >= 50 || playerScores.value[1] >= 50) {
@@ -91,15 +88,37 @@ fun App() {
                         modifier = Modifier.fillMaxSize()
                     ) {
 
-                        Image( painter = painterResource(Res.drawable.winner_logo_png_3),
+                        Image( painter = painterResource(Res.drawable.Winner_Trophy_Transparent_PNG),
                                 contentDescription = null, )
-
+                         Spacer(modifier = Modifier.height(10.dp))
                         Text(
                             text = if (playerScores.value[0] > playerScores.value[1]) "Player 1 Won" else "Player 2 Won",
                             fontSize = 24.sp,
                             fontWeight = FontWeight.Bold,
                             color = if (playerScores.value[0] > playerScores.value[1]) Color.Blue else Color.Red // Change color dynamically
                         )
+                        Spacer(modifier = Modifier.height(40.dp))
+                        Button(
+                            onClick = {
+                                playerScores.value = Array(2) { 0 }
+                                isPlayer1.value = true
+                                currentDiceImage.value = Res.drawable.compose_multiplatform
+                            },
+                            modifier = Modifier.align(Alignment.CenterHorizontally),
+                            colors = if (isPlayer1.value) {  // Corrected placement
+                                ButtonDefaults.buttonColors(containerColor = Color.Blue)
+                            } else {
+                                ButtonDefaults.buttonColors(containerColor = Color.Red)
+                            }
+                        ) {
+                            Text(
+                                text = "Restart Game",
+                                fontSize = 15.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+
+
+                        }
 
                     }
                     }
@@ -233,9 +252,7 @@ fun App() {
                     }
 
                 }
-//        IconButton{
-//             Icon(imageVector = Icons.Rounded.Refresh)
-//        }
+
 
             }
         }
